@@ -55,6 +55,10 @@ public class ArmMovement : MonoBehaviour
         }
 
 
+        if(Mouse.current.leftButton.wasReleasedThisFrame)
+        {
+            leftHandPosition = Vector3.Lerp(leftHandPosition, new Vector3(-1.5f, leftHandPosition.y, leftHandPosition.z), 2);
+        }
 
        
 
@@ -64,8 +68,6 @@ public class ArmMovement : MonoBehaviour
         rightHandPosition.y = Mathf.Clamp(rightHandPosition.y, -0.5f, 0.222f);
 
         print(leftHandPosition.y);
-
-        print("hello");
 
         leftHand.transform.localPosition = leftHandPosition;
         rightHand.transform.localPosition = rightHandPosition;
