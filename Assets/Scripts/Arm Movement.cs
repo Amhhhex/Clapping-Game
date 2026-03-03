@@ -85,12 +85,12 @@ public class ArmMovement : MonoBehaviour
 
         }
 
-        if(HandMovementP1Input.action.ReadValue<Vector2>().x == 1 && !moveRightHand && !returnRightHand)
+        if(HandMovementP2Input.action.ReadValue<Vector2>().y == 1 && !moveRightHand && !returnRightHand)
         {
             rightHandPosition.y += handSpeed * Time.deltaTime;
         }
 
-        if(HandMovementP1Input.action.ReadValue<Vector2>().x == -1 && !moveRightHand && !returnRightHand)
+        if(HandMovementP2Input.action.ReadValue<Vector2>().y == -1 && !moveRightHand && !returnRightHand)
         {
             rightHandPosition.y -= handSpeed * Time.deltaTime;
         }
