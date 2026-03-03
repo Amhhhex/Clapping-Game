@@ -11,6 +11,11 @@ public class ArmMovement : MonoBehaviour
 
     public float handSpeed;
 
+    public bool moveLeftHand;
+    public AnimationCurve aniCurve;
+    public float leftHandTimer;
+
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -57,10 +62,17 @@ public class ArmMovement : MonoBehaviour
 
         if(Mouse.current.leftButton.wasReleasedThisFrame)
         {
-            leftHandPosition = Vector3.Lerp(leftHandPosition, new Vector3(-1.5f, leftHandPosition.y, leftHandPosition.z), 2);
+            moveLeftHand = true;
+            leftHandTimer = 0f;
         }
 
        
+        if(moveLeftHand)
+        {
+            leftHandTimer += Time.deltaTime;
+
+            leftHandPosition = Vector3.Lerp(leftHandPosition, new Vector3(-1.5f, leftHandPosition.y, leftHandPosition.z), leftHandTimer);
+        }
 
 
         leftHandPosition.y = Mathf.Clamp(leftHandPosition.y, -0.5f, 0.222f);
