@@ -31,6 +31,13 @@ public class ArmMovement : MonoBehaviour
     float handDistance;
     float score;
 
+    public float rightHandPower;
+    public float leftHandPower;
+
+    public float powerIncrease;
+
+
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -65,16 +72,27 @@ public class ArmMovement : MonoBehaviour
 
         }
 
-        if(Keyboard.current.mKey.isPressed)
+        if(Keyboard.current.mKey.isPressed && !moveRightHand && !returnRightHand)
         {
             rightHandPosition.y += handSpeed * Time.deltaTime;
         }
 
-        if(Keyboard.current.nKey.isPressed)
+        if(Keyboard.current.nKey.isPressed && !moveRightHand && !returnRightHand)
         {
             rightHandPosition.y -= handSpeed * Time.deltaTime;
         }
 
+
+        if(Mouse.current.leftButton.isPressed && !moveLeftHand)
+        {
+            leftHandPower += powerIncrease * Time.deltaTime;
+
+            if(leftHandPower >= 25f)
+            {
+                leftHandPower = 25f;
+            }
+        }
+         
 
         if(Mouse.current.leftButton.wasReleasedThisFrame && !moveLeftHand)
         {
@@ -117,9 +135,20 @@ public class ArmMovement : MonoBehaviour
         {
             returnLeftHand = false;
             leftHandReturnTimer = 0f;
+            leftHandPower = 0f;
         }
 
         //Right hand movement
+
+        if(Mouse.current.rightButton.isPressed && !moveRightHand)
+        {
+            rightHandPower += powerIncrease * Time.deltaTime;
+
+            if(rightHandPower >= 25f)
+            {
+                rightHandPower = 25f;
+            }
+        }
 
         if (Mouse.current.rightButton.wasReleasedThisFrame && !moveRightHand)
         {
@@ -149,7 +178,10 @@ public class ArmMovement : MonoBehaviour
 
 
             score = math.remap(0, 1, 50, 0, handDistance);
-            
+
+            score += leftHandPower;
+            score += rightHandPower;
+
 
             rightHandMoveTimer = 0f;
         }
@@ -168,6 +200,8 @@ public class ArmMovement : MonoBehaviour
         {
             returnRightHand = false;
             rightHandReturnTimer = 0f;
+
+            rightHandPower = 0f;
         }
 
 
