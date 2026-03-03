@@ -4,6 +4,11 @@ using Unity.Mathematics;
 
 public class ArmMovement : MonoBehaviour
 {
+    public InputActionReference ClappingP1Input;
+    public InputActionReference ClappingP2Input;
+    public InputActionReference HandMovementP1Input;
+    public InputActionReference HandMovementP2Input;
+
     //The left and right hand game objects
     public GameObject leftHand;
     public GameObject rightHand;
@@ -43,7 +48,7 @@ public class ArmMovement : MonoBehaviour
     public float powerIncrease;
 
     //State change for checking claps
-    bool clapCheck;
+    public bool clapCheck;
 
 
 
@@ -61,11 +66,11 @@ public class ArmMovement : MonoBehaviour
 
         Vector3 rightHandPosition = rightHand.transform.localPosition;
 
-
+        Debug.Log(HandMovementP1Input.action.ReadValue<Vector2>());
         
 
         //Move the left and right hand's up or down based on which keys are held
-        if(Keyboard.current.kKey.isPressed && !moveLeftHand && !returnLeftHand)
+        if(HandMovementP1Input.action.ReadValue<Vector2>().y == 1 && !moveLeftHand && !returnLeftHand)
         {
 
             leftHandPosition.y += handSpeed * Time.deltaTime;
@@ -73,26 +78,26 @@ public class ArmMovement : MonoBehaviour
 
         }
 
-        if(Keyboard.current.jKey.isPressed && !moveLeftHand && !returnLeftHand)
+        if(HandMovementP1Input.action.ReadValue<Vector2>().y == -1 && !moveLeftHand && !returnLeftHand)
         {
 
             leftHandPosition.y -= handSpeed * Time.deltaTime;
 
         }
 
-        if(Keyboard.current.mKey.isPressed && !moveRightHand && !returnRightHand)
+        if(HandMovementP1Input.action.ReadValue<Vector2>().x == 1 && !moveRightHand && !returnRightHand)
         {
             rightHandPosition.y += handSpeed * Time.deltaTime;
         }
 
-        if(Keyboard.current.nKey.isPressed && !moveRightHand && !returnRightHand)
+        if(HandMovementP1Input.action.ReadValue<Vector2>().x == -1 && !moveRightHand && !returnRightHand)
         {
             rightHandPosition.y -= handSpeed * Time.deltaTime;
         }
 
 
         //While the left button is held down increase the leftHandPower var
-        if(Mouse.current.leftButton.isPressed && !moveLeftHand)
+        if(ClappingP1Input.action.IsPressed() && !moveLeftHand)
         {
             leftHandPower += powerIncrease * Time.deltaTime;
 
@@ -103,7 +108,7 @@ public class ArmMovement : MonoBehaviour
         }
          
         //Once the left button is realeased start movement towards the center, disable movement of the hands while in movtion
-        if(Mouse.current.leftButton.wasReleasedThisFrame && !moveLeftHand)
+        if(ClappingP1Input.action.WasReleasedThisFrame() && !moveLeftHand)
         {
             moveLeftHand = true;
             leftHandMoveTimer = 0f;
@@ -154,7 +159,7 @@ public class ArmMovement : MonoBehaviour
         //Right hand movement
         //Everything that applied to left hand movement is the exact same here, instead just for the right hand
 
-        if(Mouse.current.rightButton.isPressed && !moveRightHand)
+        if(ClappingP2Input.action.IsPressed() && !moveRightHand)
         {
             rightHandPower += powerIncrease * Time.deltaTime;
 
@@ -164,7 +169,7 @@ public class ArmMovement : MonoBehaviour
             }
         }
 
-        if (Mouse.current.rightButton.wasReleasedThisFrame && !moveRightHand)
+        if (ClappingP2Input.action.WasReleasedThisFrame() && !moveRightHand)
         {
             moveRightHand = true;
             rightHandMoveTimer = 0f;
@@ -232,7 +237,7 @@ public class ArmMovement : MonoBehaviour
 
 
         //Once both hands are in the center of the screen, check if a clap was done
-        if (math.abs(rightHandPosition.x - leftHandPosition.x) < 1f)
+        if (math.abs(rightHandPosition.x - leftHandPosition.x) < 0.1f)
         {
             print("CLAP!!!!!!!!!!");
             clapCheck = true;
