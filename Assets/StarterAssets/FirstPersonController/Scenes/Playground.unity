@@ -1183,6 +1183,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b068a879f2f2e1b42a636b4eaee0d32a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ArmMovement
+  ClappingP1Input: {fileID: 2225142179153696154, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  ClappingP2Input: {fileID: -8619080896115966890, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  HandMovementP1Input: {fileID: 4301939970050138316, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  HandMovementP2Input: {fileID: -5860067580306018556, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   leftHand: {fileID: 5118668418756705308}
   rightHand: {fileID: 106485888}
   handSpeed: 3
@@ -1245,6 +1249,7 @@ MonoBehaviour:
   rightHandPower: 0
   leftHandPower: 0
   powerIncrease: 20
+  clapCheck: 0
 --- !u!4 &849190468297917917
 Transform:
   m_ObjectHideFlags: 0

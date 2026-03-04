@@ -66,6 +66,10 @@ public class ArmMovement : MonoBehaviour
 
         Vector3 rightHandPosition = rightHand.transform.localPosition;
 
+        //print("Screen Width / 2: " + Screen.width / 20);
+
+        //Vector3 middleScreen = Camera.main.ScreenToViewportPoint(new Vector3(Screen.width / 1000, 0, 0));
+
         Debug.Log(HandMovementP1Input.action.ReadValue<Vector2>());
         
 
@@ -101,19 +105,19 @@ public class ArmMovement : MonoBehaviour
         {
             leftHandPower += powerIncrease * Time.deltaTime;
 
-            if(leftHandPower >= 25f)
-            {
-                leftHandPower = 25f;
-            }
+            leftHandPosition.x -= 0.09f * leftHandPower * Time.deltaTime;
+
+
+            leftHandPower = Mathf.Clamp(leftHandPower, 0, 25);
         }
          
         //Once the left button is realeased start movement towards the center, disable movement of the hands while in movtion
-        if(ClappingP1Input.action.WasReleasedThisFrame() && !moveLeftHand)
+        if(ClappingP1Input.action.WasReleasedThisFrame() && !moveLeftHand && !returnLeftHand)
         {
             moveLeftHand = true;
             leftHandMoveTimer = 0f;
 
-            leftReturnPosition = leftHand.transform.localPosition;
+            leftReturnPosition = new Vector3(-2.07f, leftHandPosition.y, leftHandPosition.z);
         }
 
        //Interprolating the movement of the left hand towards the center of the screen
@@ -123,7 +127,7 @@ public class ArmMovement : MonoBehaviour
 
             float aniCurveTimer = aniCurveMove.Evaluate(leftHandMoveTimer);
 
-            leftHandPosition = Vector3.Lerp(leftHandPosition, new Vector3(-1.19f, leftHandPosition.y, leftHandPosition.z), aniCurveTimer);
+            leftHandPosition = Vector3.Lerp(leftHandPosition, new Vector3(-1.26f, leftHandPosition.y, leftHandPosition.z), aniCurveTimer);
         }
 
         //Once the hand reaches the middle of the screen, toggle the move to false and the return state to true
@@ -163,18 +167,19 @@ public class ArmMovement : MonoBehaviour
         {
             rightHandPower += powerIncrease * Time.deltaTime;
 
-            if(rightHandPower >= 25f)
-            {
-                rightHandPower = 25f;
-            }
+            rightHandPosition.x += 0.09f * rightHandPower * Time.deltaTime;
+
+
+            rightHandPower = Mathf.Clamp(rightHandPower, 0, 25);
+
         }
 
-        if (ClappingP2Input.action.WasReleasedThisFrame() && !moveRightHand)
+        if (ClappingP2Input.action.WasReleasedThisFrame() && !moveRightHand && !returnRightHand)
         {
             moveRightHand = true;
             rightHandMoveTimer = 0f;
 
-            rightReturnPosition = rightHand.transform.localPosition;
+            rightReturnPosition = new Vector3(-0.37f, rightHandPosition.y, rightHandPosition.z);
         }
 
 
@@ -184,18 +189,18 @@ public class ArmMovement : MonoBehaviour
 
             float aniCurveTimer = aniCurveMove.Evaluate(rightHandMoveTimer);
 
-            rightHandPosition = Vector3.Lerp(rightHandPosition, new Vector3(-1.23f, rightHandPosition.y, rightHandPosition.z), aniCurveTimer);
+            rightHandPosition = Vector3.Lerp(rightHandPosition, new Vector3(-1.20f, rightHandPosition.y, rightHandPosition.z), aniCurveTimer);
         }
 
         
 
 
 
-        if (handDistance <= 0.5f)
-        {
-            print(handDistance);
+        //if (handDistance <= 0.5f)
+        //{
+        //    print(handDistance);
             
-        }
+        //}
 
 
 
