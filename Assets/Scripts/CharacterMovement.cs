@@ -3,7 +3,7 @@ using UnityEngine.InputSystem;
 
 public class CharacterMovement : MonoBehaviour
 {
-    float rotationSpeed = 25f;
+    int rotationSpeed = 30;
     Vector2 CameraDirection;
     public ArmMovement armMovementScr;
     public Rigidbody PlayerBody;
@@ -12,6 +12,7 @@ public class CharacterMovement : MonoBehaviour
     public InputActionReference CameraP2Input;
     public InputActionReference ClappingP1Input;
     public InputActionReference ClappingP2Input;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -30,7 +31,7 @@ public class CharacterMovement : MonoBehaviour
         if (armMovementScr.clapCheck == true)
         {
             //Add force by clap score divided by maximum
-            PlayerBody.AddForce(transform.forward, ForceMode.Impulse);
+            PlayerBody.AddForce(PlayerCamera.transform.forward * armMovementScr.clapScore/1000, ForceMode.Impulse);
             armMovementScr.clapCheck = false;
         }
     }
@@ -38,6 +39,6 @@ public class CharacterMovement : MonoBehaviour
     void CameraMovement()
     {
         CameraDirection = new Vector2(-CameraP1Input.action.ReadValue<Vector2>().y + -CameraP2Input.action.ReadValue<Vector2>().y, CameraP1Input.action.ReadValue<Vector2>().x + CameraP2Input.action.ReadValue<Vector2>().x);
-        transform.eulerAngles = PlayerCamera.transform.eulerAngles + (Vector3)CameraDirection * rotationSpeed * Time.deltaTime;
+        PlayerCamera.transform.eulerAngles = PlayerCamera.transform.eulerAngles + (Vector3)CameraDirection * rotationSpeed * Time.deltaTime;
     }
 }

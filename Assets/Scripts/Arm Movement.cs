@@ -1,6 +1,9 @@
+using System;
+using System.Security.Cryptography;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using Unity.Mathematics;
+using UnityEngine.SocialPlatforms.Impl;
 
 public class ArmMovement : MonoBehaviour
 {
@@ -38,11 +41,12 @@ public class ArmMovement : MonoBehaviour
 
     //A global variable for distance and score measurement
     float handDistance;
-    float score;
+    public float clapScore;
 
     //seperate variables for left and right hand powers
     public float rightHandPower;
     public float leftHandPower;
+    float maximumHandPower = 25;
 
     //the amount in which the hand powers will increase
     public float powerIncrease;
@@ -69,24 +73,17 @@ public class ArmMovement : MonoBehaviour
         //print("Screen Width / 2: " + Screen.width / 20);
 
         //Vector3 middleScreen = Camera.main.ScreenToViewportPoint(new Vector3(Screen.width / 1000, 0, 0));
-
-        Debug.Log(HandMovementP1Input.action.ReadValue<Vector2>());
         
 
         //Move the left and right hand's up or down based on which keys are held
         if(HandMovementP1Input.action.ReadValue<Vector2>().y == 1 && !moveLeftHand && !returnLeftHand)
         {
-
             leftHandPosition.y += handSpeed * Time.deltaTime;
-
-
         }
 
         if(HandMovementP1Input.action.ReadValue<Vector2>().y == -1 && !moveLeftHand && !returnLeftHand)
         {
-
             leftHandPosition.y -= handSpeed * Time.deltaTime;
-
         }
 
         if(HandMovementP2Input.action.ReadValue<Vector2>().y == 1 && !moveRightHand && !returnRightHand)
@@ -108,7 +105,7 @@ public class ArmMovement : MonoBehaviour
             leftHandPosition.x -= 0.09f * leftHandPower * Time.deltaTime;
 
 
-            leftHandPower = Mathf.Clamp(leftHandPower, 0, 25);
+            leftHandPower = Mathf.Clamp(leftHandPower, 0, maximumHandPower);
         }
          
         //Once the left button is realeased start movement towards the center, disable movement of the hands while in movtion
@@ -170,8 +167,7 @@ public class ArmMovement : MonoBehaviour
             rightHandPosition.x += 0.09f * rightHandPower * Time.deltaTime;
 
 
-            rightHandPower = Mathf.Clamp(rightHandPower, 0, 25);
-
+            rightHandPower = Mathf.Clamp(rightHandPower, 0, maximumHandPower);
         }
 
         if (ClappingP2Input.action.WasReleasedThisFrame() && !moveRightHand && !returnRightHand)
@@ -191,16 +187,6 @@ public class ArmMovement : MonoBehaviour
 
             rightHandPosition = Vector3.Lerp(rightHandPosition, new Vector3(-1.20f, rightHandPosition.y, rightHandPosition.z), aniCurveTimer);
         }
-
-        
-
-
-
-        //if (handDistance <= 0.5f)
-        //{
-        //    print(handDistance);
-            
-        //}
 
 
 
@@ -227,92 +213,56 @@ public class ArmMovement : MonoBehaviour
         {
             returnRightHand = false;
             rightHandReturnTimer = 0f;
-
             rightHandPower = 0f;
         }
-
-
-
-
-
-
 
 
         //print("Absolute Value: " + math.abs(rightHandPosition.x - leftHandPosition.x));
 
 
         //Once both hands are in the center of the screen, check if a clap was done
-        if (math.abs(rightHandPosition.x - leftHandPosition.x) < 0.1f)
+        if (math.abs(rightHandPosition.x - leftHandPosition.x) < 0.1f && !clapCheck)
         {
             print("CLAP!!!!!!!!!!");
             clapCheck = true;
         }
-
         else
         {
             clapCheck = false;
         }
 
         //during a clap check, grab the Vector3 distance between the two hands
-        //remap that value to 50 - 0, 50 being the closest they could possibly be
-
+        //remap that value to 100 - 0, 100 being the closest they could possibly be
         //Then add the powers of the other two hands to the score
+
         if (clapCheck)
         {
             handDistance = Vector3.Distance(rightHandPosition, leftHandPosition);
 
+            clapScore = math.remap(0, 1, 100, 0, handDistance) * (leftHandPower + rightHandPower) / (maximumHandPower * 2);
+            Debug.Log(clapScore);
 
-            score = math.remap(0, 1, 50, 0, handDistance);
+            if (clapScore >= 50f)
+            {
+                if (clapScore >= 90f) { print("PERFECT!! score"); }
+                if (clapScore >= 80f) { print("Great! score"); } else { print("Okay score"); }
 
-            score += leftHandPower;
-            score += rightHandPower;
-
+                rightReturnPosition.y = UnityEngine.Random.Range(-0.5f, 0.6f);
+                leftReturnPosition.y = UnityEngine.Random.Range(-0.5f, 0.6f);
+            }
+            else if (clapScore >= 80f)
+            {
+                print("fail score");
+            }
         }
-
-        /*
-        print("Distance between the hands: " + handDistance);
-
-        print(score);
-
-        */
-
-        //
-        
-        //Assigning a value with the various score totals
-        if (score >= 90f)
-        {
-            print("PERFECT!!");
-        }
-        else if (score >= 80f)
-        {
-            print("Great!");
-        }
-
-        else if(score >= 50f)
-        {
-            print("CMON MAN");
-        }
-
-        else if (score <= 50f)
-        {
-            print("pathetic");
-        }
-
-        
 
         //restrict the left and right hand Y positions
         leftHandPosition.y = Mathf.Clamp(leftHandPosition.y, -0.5f, 0.6f);
-
         rightHandPosition.y = Mathf.Clamp(rightHandPosition.y, -0.5f, 0.6f);
-
 
 
         //Change the transforms of the left and right hand to their newly update spots
         leftHand.transform.localPosition = leftHandPosition;
         rightHand.transform.localPosition = rightHandPosition;
-
-
-
-        
     }
 }
