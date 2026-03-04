@@ -54,11 +54,24 @@ public class ArmMovement : MonoBehaviour
     //State change for checking claps
     public bool clapCheck;
 
+    float handXMovement = 0.9f;
+
+    float maxRightHandPosition = -0.5f;
+    float maxLeftHandPosition = -1.9f;
+
+    float leftHandReturnFloat = -1.5f;
+    float rightHandReturnFloat = -1f;
+
+    float leftHandCenterFloat = -1.26f;
+    float rightHandCenterFloat = -1.20f;
+
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+
+        
         
     }
 
@@ -102,7 +115,9 @@ public class ArmMovement : MonoBehaviour
         {
             leftHandPower += powerIncrease * Time.deltaTime;
 
-            leftHandPosition.x -= 0.09f * leftHandPower * Time.deltaTime;
+            //leftHandPosition.x -= handXMovement * leftHandPower * Time.deltaTime;
+            
+            leftHandPosition.x = math.remap(0, maximumHandPower, leftHandReturnFloat, maxLeftHandPosition, leftHandPower);
 
 
             leftHandPower = Mathf.Clamp(leftHandPower, 0, maximumHandPower);
@@ -114,17 +129,19 @@ public class ArmMovement : MonoBehaviour
             moveLeftHand = true;
             leftHandMoveTimer = 0f;
 
-            leftReturnPosition = new Vector3(-2.07f, leftHandPosition.y, leftHandPosition.z);
+            leftReturnPosition = new Vector3(leftHandReturnFloat, leftHandPosition.y, leftHandPosition.z);
+
+            
         }
 
        //Interprolating the movement of the left hand towards the center of the screen
         if(moveLeftHand)
         {
-            leftHandMoveTimer += Time.deltaTime;
+            leftHandMoveTimer += leftHandPower/5 * Time.deltaTime;
 
             float aniCurveTimer = aniCurveMove.Evaluate(leftHandMoveTimer);
 
-            leftHandPosition = Vector3.Lerp(leftHandPosition, new Vector3(-1.26f, leftHandPosition.y, leftHandPosition.z), aniCurveTimer);
+            leftHandPosition = Vector3.Lerp(leftHandPosition, new Vector3(leftHandCenterFloat, leftHandPosition.y, leftHandPosition.z), aniCurveTimer);
         }
 
         //Once the hand reaches the middle of the screen, toggle the move to false and the return state to true
@@ -155,6 +172,8 @@ public class ArmMovement : MonoBehaviour
             returnLeftHand = false;
             leftHandReturnTimer = 0f;
             leftHandPower = 0f;
+
+            
         }
 
         //Right hand movement
@@ -164,10 +183,15 @@ public class ArmMovement : MonoBehaviour
         {
             rightHandPower += powerIncrease * Time.deltaTime;
 
-            rightHandPosition.x += 0.09f * rightHandPower * Time.deltaTime;
+            //rightHandPosition.x += handXMovement * rightHandPower * Time.deltaTime;
+
+
+            rightHandPosition.x = math.remap(0, maximumHandPower, rightHandReturnFloat, maxRightHandPosition, rightHandPower);
 
 
             rightHandPower = Mathf.Clamp(rightHandPower, 0, maximumHandPower);
+
+            //rightHandPosition.x  = Mathf.Clamp()
         }
 
         if (ClappingP2Input.action.WasReleasedThisFrame() && !moveRightHand && !returnRightHand)
@@ -175,17 +199,21 @@ public class ArmMovement : MonoBehaviour
             moveRightHand = true;
             rightHandMoveTimer = 0f;
 
-            rightReturnPosition = new Vector3(-0.37f, rightHandPosition.y, rightHandPosition.z);
+            
+
+            rightReturnPosition = new Vector3(rightHandReturnFloat, rightHandPosition.y, rightHandPosition.z);
         }
 
 
         if (moveRightHand)
         {
-            rightHandMoveTimer += Time.deltaTime;
+            rightHandMoveTimer += rightHandPower/5 * Time.deltaTime;
+
+            //rightHandMoveTimer += Time.deltaTime;
 
             float aniCurveTimer = aniCurveMove.Evaluate(rightHandMoveTimer);
 
-            rightHandPosition = Vector3.Lerp(rightHandPosition, new Vector3(-1.20f, rightHandPosition.y, rightHandPosition.z), aniCurveTimer);
+            rightHandPosition = Vector3.Lerp(rightHandPosition, new Vector3(rightHandCenterFloat, rightHandPosition.y, rightHandPosition.z), aniCurveTimer);
         }
 
 
@@ -214,6 +242,8 @@ public class ArmMovement : MonoBehaviour
             returnRightHand = false;
             rightHandReturnTimer = 0f;
             rightHandPower = 0f;
+
+            
         }
 
 
@@ -221,15 +251,20 @@ public class ArmMovement : MonoBehaviour
 
 
         //Once both hands are in the center of the screen, check if a clap was done
-        if (math.abs(rightHandPosition.x - leftHandPosition.x) < 0.1f && !clapCheck)
+        if (math.abs(rightHandPosition.x - leftHandPosition.x) < 0.08f && !clapCheck)
         {
-            print("CLAP!!!!!!!!!!");
+            Debug.Log("CLAP!!!");
             clapCheck = true;
+
         }
-        else
+
+
+        if (math.abs(rightHandPosition.x - leftHandPosition.x) > 0.4f)
         {
+
             clapCheck = false;
         }
+
 
         //during a clap check, grab the Vector3 distance between the two hands
         //remap that value to 100 - 0, 100 being the closest they could possibly be
@@ -239,8 +274,17 @@ public class ArmMovement : MonoBehaviour
         {
             handDistance = Vector3.Distance(rightHandPosition, leftHandPosition);
 
+            //print("SUP");
+
+            //float remapHandDistance = math.remap(0, 1, 50, 0, handDistance);
+
+            //print("Remap Hand Distance: " + remapHandDistance);
+
+
             clapScore = math.remap(0, 1, 100, 0, handDistance) * (leftHandPower + rightHandPower) / (maximumHandPower * 2);
-            Debug.Log(clapScore);
+            //Debug.Log(clapScore);
+
+            //print("Clap Score: " + clapScore);
 
             if (clapScore >= 50f)
             {
@@ -254,7 +298,11 @@ public class ArmMovement : MonoBehaviour
             {
                 print("fail score");
             }
+
+            
         }
+
+
 
         //restrict the left and right hand Y positions
         leftHandPosition.y = Mathf.Clamp(leftHandPosition.y, -0.5f, 0.6f);

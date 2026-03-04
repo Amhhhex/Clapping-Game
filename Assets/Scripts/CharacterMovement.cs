@@ -32,7 +32,7 @@ public class CharacterMovement : MonoBehaviour
         {
             //Add force by clap score divided by maximum
             PlayerBody.AddForce(PlayerCamera.transform.forward * armMovementScr.clapScore/1000, ForceMode.Impulse);
-            armMovementScr.clapCheck = false;
+            //armMovementScr.clapCheck = false;
         }
     }
 
