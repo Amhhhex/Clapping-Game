@@ -65,6 +65,11 @@ public class ArmMovement : MonoBehaviour
     float leftHandCenterFloat = -1.26f;
     float rightHandCenterFloat = -1.20f;
 
+    bool leftHandReturned;
+    bool rightHandReturned;
+
+    bool firstClap;
+
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -142,6 +147,8 @@ public class ArmMovement : MonoBehaviour
             float aniCurveTimer = aniCurveMove.Evaluate(leftHandMoveTimer);
 
             leftHandPosition = Vector3.Lerp(leftHandPosition, new Vector3(leftHandCenterFloat, leftHandPosition.y, leftHandPosition.z), aniCurveTimer);
+
+            leftHandReturned = false;
         }
 
         //Once the hand reaches the middle of the screen, toggle the move to false and the return state to true
@@ -173,6 +180,7 @@ public class ArmMovement : MonoBehaviour
             leftHandReturnTimer = 0f;
             leftHandPower = 0f;
 
+            leftHandReturned = true;
             
         }
 
@@ -214,6 +222,8 @@ public class ArmMovement : MonoBehaviour
             float aniCurveTimer = aniCurveMove.Evaluate(rightHandMoveTimer);
 
             rightHandPosition = Vector3.Lerp(rightHandPosition, new Vector3(rightHandCenterFloat, rightHandPosition.y, rightHandPosition.z), aniCurveTimer);
+
+            rightHandReturned = false;
         }
 
 
@@ -243,7 +253,14 @@ public class ArmMovement : MonoBehaviour
             rightHandReturnTimer = 0f;
             rightHandPower = 0f;
 
+            rightHandReturned = true;
             
+        }
+
+
+        if(rightHandReturned && leftHandReturned)
+        {
+            firstClap = true;
         }
 
 
@@ -270,11 +287,11 @@ public class ArmMovement : MonoBehaviour
         //remap that value to 100 - 0, 100 being the closest they could possibly be
         //Then add the powers of the other two hands to the score
 
-        if (clapCheck)
+        if (clapCheck && firstClap)
         {
             handDistance = Vector3.Distance(rightHandPosition, leftHandPosition);
 
-            //print("SUP");
+            print("SUP");
 
             //float remapHandDistance = math.remap(0, 1, 50, 0, handDistance);
 
@@ -298,6 +315,8 @@ public class ArmMovement : MonoBehaviour
             {
                 print("fail score");
             }
+
+            firstClap = false;
 
             
         }
