@@ -1,6 +1,8 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Unity.Mathematics;
+using System;
+using System.Security.Cryptography;
 
 public class ArmMovement : MonoBehaviour
 {
@@ -238,11 +240,11 @@ public class ArmMovement : MonoBehaviour
 
 
 
-        //print("Absolute Value: " + math.abs(rightHandPosition.x - leftHandPosition.x));
+        print("Absolute Value: " + math.abs(rightHandPosition.x - leftHandPosition.x));
 
 
         //Once both hands are in the center of the screen, check if a clap was done
-        if (math.abs(rightHandPosition.x - leftHandPosition.x) < 0.1f)
+        if (math.abs(rightHandPosition.x - leftHandPosition.x) < 0.1f && !clapCheck)
         {
             print("CLAP!!!!!!!!!!");
             clapCheck = true;
@@ -267,6 +269,34 @@ public class ArmMovement : MonoBehaviour
             score += leftHandPower;
             score += rightHandPower;
 
+
+            if (score >= 90f)
+            {
+                print("PERFECT!!");
+
+                rightReturnPosition.y = UnityEngine.Random.Range(-0.5f, 0.6f);
+                leftReturnPosition.y = UnityEngine.Random.Range(-0.5f, 0.6f);
+
+            }
+            else if (score >= 80f)
+            {
+                rightReturnPosition.y = UnityEngine.Random.Range(-0.5f, 0.6f);
+                leftReturnPosition.y = UnityEngine.Random.Range(-0.5f, 0.6f);
+                print("Great!");
+            }
+
+            else if (score >= 50f)
+            {
+                rightReturnPosition.y = UnityEngine.Random.Range(-0.5f, 0.6f);
+                leftReturnPosition.y = UnityEngine.Random.Range(-0.5f, 0.6f);
+                print("CMON MAN");
+            }
+
+            else if (score <= 50f)
+            {
+                print("pathetic");
+            }
+
         }
 
         /*
@@ -279,17 +309,27 @@ public class ArmMovement : MonoBehaviour
         //
         
         //Assigning a value with the various score totals
+
+        /*
         if (score >= 90f)
         {
             print("PERFECT!!");
+
+            rightReturnPosition.y = UnityEngine.Random.Range(-0.5f, 0.6f);
+            leftReturnPosition.y = UnityEngine.Random.Range(-0.5f, 0.6f);
+
         }
         else if (score >= 80f)
         {
+            rightReturnPosition.y = UnityEngine.Random.Range(-0.5f, 0.6f);
+            leftReturnPosition.y = UnityEngine.Random.Range(-0.5f, 0.6f);
             print("Great!");
         }
 
         else if(score >= 50f)
         {
+            rightReturnPosition.y = UnityEngine.Random.Range(-0.5f, 0.6f);
+            leftReturnPosition.y = UnityEngine.Random.Range(-0.5f, 0.6f);
             print("CMON MAN");
         }
 
@@ -297,6 +337,7 @@ public class ArmMovement : MonoBehaviour
         {
             print("pathetic");
         }
+        */
 
         
 
