@@ -23,6 +23,10 @@ public class ArmMovement : MonoBehaviour
     public AnimationCurve aniCurveMove;
     public AnimationCurve aniCurveReturn;
 
+    public AudioClip clapAudio;
+    public AudioClip windupAudio;
+    AudioSource playerAudioSource;
+
     //State switching between moving the left hand and returning the left hand
     public bool moveLeftHand;
     public bool returnLeftHand;
@@ -75,9 +79,9 @@ public class ArmMovement : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        playerAudioSource = GetComponent<AudioSource>();
         leftHand.transform.localPosition = new Vector3(leftHandReturnFloat, leftHand.transform.localPosition.y, leftHand.transform.localPosition.y);
         rightHand.transform.localPosition = new Vector3(rightHandReturnFloat, rightHand.transform.localPosition.y, rightHand.transform.localPosition.y);
-
     }
 
     // Update is called once per frame
@@ -91,6 +95,9 @@ public class ArmMovement : MonoBehaviour
         //print("Screen Width / 2: " + Screen.width / 20);
 
         //Vector3 middleScreen = Camera.main.ScreenToViewportPoint(new Vector3(Screen.width / 1000, 0, 0));
+
+            //playerAudioSource.clip = clapAudio;
+            //playerAudioSource.Play();
         
 
         //Move the left and right hand's up or down based on which keys are held
