@@ -82,6 +82,7 @@ public class ArmMovement : MonoBehaviour
         playerAudioSource = GetComponent<AudioSource>();
         leftHand.transform.localPosition = new Vector3(leftHandReturnFloat, leftHand.transform.localPosition.y, leftHand.transform.localPosition.y);
         rightHand.transform.localPosition = new Vector3(rightHandReturnFloat, rightHand.transform.localPosition.y, rightHand.transform.localPosition.y);
+        leftHandReturned = true; rightHandReturned = true;
     }
 
     // Update is called once per frame
@@ -95,9 +96,6 @@ public class ArmMovement : MonoBehaviour
         //print("Screen Width / 2: " + Screen.width / 20);
 
         //Vector3 middleScreen = Camera.main.ScreenToViewportPoint(new Vector3(Screen.width / 1000, 0, 0));
-
-            //playerAudioSource.clip = clapAudio;
-            //playerAudioSource.Play();
         
 
         //Move the left and right hand's up or down based on which keys are held
@@ -312,7 +310,12 @@ public class ArmMovement : MonoBehaviour
 
             if (clapScore >= 50f)
             {
-                if (clapScore >= 90f) { print("PERFECT!! score"); }
+                if (clapScore >= 90f) 
+                { 
+                    print("PERFECT!! score"); 
+                    playerAudioSource.clip = clapAudio;
+                    playerAudioSource.Play();
+                }
                 if (clapScore >= 80f) { print("Great! score"); } else { print("Okay score"); }
 
                 rightReturnPosition.y = UnityEngine.Random.Range(-0.5f, 0.6f);
