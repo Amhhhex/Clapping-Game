@@ -54,7 +54,7 @@ public class ArmMovement : MonoBehaviour
     //State change for checking claps
     public bool clapCheck;
 
-    float handXMovement = 0.9f;
+    //float handXMovement = 0.9f;
 
     float maxRightHandPosition = -0.5f;
     float maxLeftHandPosition = -1.9f;
@@ -75,9 +75,9 @@ public class ArmMovement : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        leftHand.transform.localPosition = new Vector3(leftHandReturnFloat, leftHand.transform.localPosition.y, leftHand.transform.localPosition.y);
+        rightHand.transform.localPosition = new Vector3(rightHandReturnFloat, rightHand.transform.localPosition.y, rightHand.transform.localPosition.y);
 
-        
-        
     }
 
     // Update is called once per frame
@@ -311,7 +311,7 @@ public class ArmMovement : MonoBehaviour
                 rightReturnPosition.y = UnityEngine.Random.Range(-0.5f, 0.6f);
                 leftReturnPosition.y = UnityEngine.Random.Range(-0.5f, 0.6f);
             }
-            else if (clapScore >= 80f)
+            else if (clapScore >= 10f)
             {
                 print("fail score");
             }
