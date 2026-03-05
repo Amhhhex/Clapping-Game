@@ -1,5 +1,6 @@
 using System;
 using System.Security.Cryptography;
+using TMPro;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -75,6 +76,10 @@ public class ArmMovement : MonoBehaviour
 
     bool firstClap;
 
+    public TextMeshProUGUI startingClapHint;
+
+    
+
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -84,11 +89,16 @@ public class ArmMovement : MonoBehaviour
         leftHand.transform.localPosition = new Vector3(leftHandReturnFloat, leftHand.transform.localPosition.y, leftHand.transform.localPosition.y);
         rightHand.transform.localPosition = new Vector3(rightHandReturnFloat, rightHand.transform.localPosition.y, rightHand.transform.localPosition.y);
         leftHandReturned = true; rightHandReturned = true;
+
     }
 
     // Update is called once per frame
     void Update()
     {
+
+        
+
+
         //Store the position of the left and right hands in local space
         Vector3 leftHandPosition = leftHand.transform.localPosition;
 
@@ -333,6 +343,9 @@ public class ArmMovement : MonoBehaviour
 
             if (clapScore >= 50f)
             {
+
+                startingClapHint.enabled = false;
+
                 if (clapScore >= 90f) 
                 { 
                     print("PERFECT!! score"); 

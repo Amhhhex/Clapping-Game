@@ -79,9 +79,9 @@ public class CatchingMinigame : MonoBehaviour
         if(catchingStarted)
         {
 
-            catchingTimer += Time.deltaTime;
+            catchingTimer -= Time.deltaTime;
 
-            timerText.text = catchingTimer.ToString();
+            timerText.text = "Time Left: " + ((int)catchingTimer).ToString();
 
             if (currentObject == null)
             {
@@ -139,7 +139,7 @@ public class CatchingMinigame : MonoBehaviour
                 Destroy(currentObject);
             }
             
-            if(catchingTimer > 30f)
+            if(catchingTimer < 0f)
             {
                 catchingStarted = false;
                 characterMovementScript.enabled = true;
@@ -182,6 +182,6 @@ public class CatchingMinigame : MonoBehaviour
         score = 0;
 
         catchingStarted = true;
-        catchingTimer = 0f;
+        catchingTimer = 30f;
     }
 }
