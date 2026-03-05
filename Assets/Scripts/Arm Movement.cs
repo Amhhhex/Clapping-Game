@@ -23,10 +23,16 @@ public class ArmMovement : MonoBehaviour
     public AnimationCurve aniCurveMove;
     public AnimationCurve aniCurveReturn;
 
-    public AudioClip clapAudio;
+    public AudioClip megaClapAudio;
+    public AudioClip soloClapAudio;
     public AudioClip windupAudio;
     public AudioClip windupChargedAudio;
     AudioSource playerAudioSource;
+
+    public Sprite handSpr;
+    public Sprite windingHandSpr;
+    SpriteRenderer leftHandSprRnd;
+    SpriteRenderer rightHandSprRnd;
 
     //State switching between moving the left hand and returning the left hand
     public bool moveLeftHand;
@@ -84,6 +90,7 @@ public class ArmMovement : MonoBehaviour
         leftHand.transform.localPosition = new Vector3(leftHandReturnFloat, leftHand.transform.localPosition.y, leftHand.transform.localPosition.y);
         rightHand.transform.localPosition = new Vector3(rightHandReturnFloat, rightHand.transform.localPosition.y, rightHand.transform.localPosition.y);
         leftHandReturned = true; rightHandReturned = true;
+        leftHandSprRnd = leftHand.GetComponent<SpriteRenderer>(); rightHandSprRnd = rightHand.GetComponent<SpriteRenderer>();
     }
 
     // Update is called once per frame
@@ -125,7 +132,7 @@ public class ArmMovement : MonoBehaviour
         if(ClappingP1Input.action.IsPressed() && !moveLeftHand)
         {
             leftHandPower += powerIncrease * Time.deltaTime;
-
+            leftHandSprRnd.sprite = windingHandSpr;
             //leftHandPosition.x -= handXMovement * leftHandPower * Time.deltaTime;
             if (playerAudioSource.isPlaying == false)
             {
@@ -153,14 +160,13 @@ public class ArmMovement : MonoBehaviour
         {
             moveLeftHand = true;
             leftHandMoveTimer = 0f;
-
             leftReturnPosition = new Vector3(leftHandReturnFloat, leftHandPosition.y, leftHandPosition.z);
+            leftHandSprRnd.sprite = handSpr;
 
-            
         }
 
-       //Interprolating the movement of the left hand towards the center of the screen
-        if(moveLeftHand)
+        //Interprolating the movement of the left hand towards the center of the screen
+        if (moveLeftHand)
         {
             leftHandMoveTimer += leftHandPower/5 * Time.deltaTime;
 
@@ -210,7 +216,7 @@ public class ArmMovement : MonoBehaviour
         if(ClappingP2Input.action.IsPressed() && !moveRightHand)
         {
             rightHandPower += powerIncrease * Time.deltaTime;
-
+            rightHandSprRnd.sprite = windingHandSpr; rightHandSprRnd.flipX = true;
             //rightHandPosition.x += handXMovement * rightHandPower * Time.deltaTime;
             if (playerAudioSource.isPlaying == false)
             {
@@ -238,10 +244,8 @@ public class ArmMovement : MonoBehaviour
         {
             moveRightHand = true;
             rightHandMoveTimer = 0f;
-
-            
-
             rightReturnPosition = new Vector3(rightHandReturnFloat, rightHandPosition.y, rightHandPosition.z);
+            rightHandSprRnd.sprite = handSpr; rightHandSprRnd.flipX = true;
         }
 
 
@@ -334,12 +338,17 @@ public class ArmMovement : MonoBehaviour
             if (clapScore >= 50f)
             {
                 if (clapScore >= 90f) 
-                { 
-                    print("PERFECT!! score"); 
-                    playerAudioSource.clip = clapAudio;
+                {
+                    Debug.Log("PERFECT!! score"); 
+                    playerAudioSource.clip = megaClapAudio;
                     playerAudioSource.Play();
                 }
-                if (clapScore >= 80f) { print("Great! score"); } else { print("Okay score"); }
+                else if (clapScore >= 75f)
+                {
+                    Debug.Log("Great! score");
+                    playerAudioSource.clip = soloClapAudio;
+                    playerAudioSource.Play();
+                } else { Debug.Log("Okay score"); }
 
                 rightReturnPosition.y = UnityEngine.Random.Range(-0.5f, 0.6f);
                 leftReturnPosition.y = UnityEngine.Random.Range(-0.5f, 0.6f);
