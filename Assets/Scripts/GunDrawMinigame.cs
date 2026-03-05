@@ -8,6 +8,7 @@ public class GunDrawMinigame : MonoBehaviour
     public GameObject playerObj;
     public GameObject gunObj;
     public TextMeshProUGUI drawAnnounceText;
+    Rigidbody playerBody;
     ArmMovement armMovementScr;
     CharacterMovement characterMovementScr;
     float currentTimeInDraw;
@@ -21,6 +22,7 @@ public class GunDrawMinigame : MonoBehaviour
     {
         armMovementScr = playerObj.GetComponentInChildren<ArmMovement>();
         characterMovementScr = playerObj.GetComponent<CharacterMovement>();
+        playerBody = playerObj.GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
@@ -39,7 +41,7 @@ public class GunDrawMinigame : MonoBehaviour
                 drawAnnounceText.gameObject.SetActive(true);
                 currentTimeInShowdown += Time.deltaTime;
 
-                if (leftHandCollidedScr.handCollidedObj == gunObj && leftHandCollidedScr.handCollidedObj == gunObj)
+                if (leftHandCollidedScr.handCollidedObj == gunObj && rightHandCollidedScr.handCollidedObj == gunObj)
                 {
                     drawAnnounceText.text = "You win";
                     //Play gunshot
@@ -48,6 +50,7 @@ public class GunDrawMinigame : MonoBehaviour
                     currentTimeInDraw = 0;
                     currentTimeInShowdown = 0;
                     characterMovementScr.enabled = true;
+                    playerBody.angularVelocity = Vector3.zero;
                     showdownStarted = false;
                 }
 
@@ -58,6 +61,7 @@ public class GunDrawMinigame : MonoBehaviour
                     currentTimeInDraw = 0;
                     currentTimeInShowdown = 0;
                     characterMovementScr.enabled = true;
+                    playerBody.angularVelocity = Vector3.zero;
                     showdownStarted = false;
                 }
             }

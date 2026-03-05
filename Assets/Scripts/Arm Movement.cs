@@ -23,6 +23,10 @@ public class ArmMovement : MonoBehaviour
     public AnimationCurve aniCurveMove;
     public AnimationCurve aniCurveReturn;
 
+    public AudioClip clapAudio;
+    public AudioClip windupAudio;
+    AudioSource playerAudioSource;
+
     //State switching between moving the left hand and returning the left hand
     public bool moveLeftHand;
     public bool returnLeftHand;
@@ -75,9 +79,10 @@ public class ArmMovement : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        playerAudioSource = GetComponent<AudioSource>();
         leftHand.transform.localPosition = new Vector3(leftHandReturnFloat, leftHand.transform.localPosition.y, leftHand.transform.localPosition.y);
         rightHand.transform.localPosition = new Vector3(rightHandReturnFloat, rightHand.transform.localPosition.y, rightHand.transform.localPosition.y);
-
+        leftHandReturned = true; rightHandReturned = true;
     }
 
     // Update is called once per frame
@@ -305,7 +310,12 @@ public class ArmMovement : MonoBehaviour
 
             if (clapScore >= 50f)
             {
-                if (clapScore >= 90f) { print("PERFECT!! score"); }
+                if (clapScore >= 90f) 
+                { 
+                    print("PERFECT!! score"); 
+                    playerAudioSource.clip = clapAudio;
+                    playerAudioSource.Play();
+                }
                 if (clapScore >= 80f) { print("Great! score"); } else { print("Okay score"); }
 
                 rightReturnPosition.y = UnityEngine.Random.Range(-0.5f, 0.6f);
