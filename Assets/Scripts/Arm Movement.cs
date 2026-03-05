@@ -25,6 +25,7 @@ public class ArmMovement : MonoBehaviour
 
     public AudioClip clapAudio;
     public AudioClip windupAudio;
+    public AudioClip windupChargedAudio;
     AudioSource playerAudioSource;
 
     //State switching between moving the left hand and returning the left hand
@@ -126,7 +127,21 @@ public class ArmMovement : MonoBehaviour
             leftHandPower += powerIncrease * Time.deltaTime;
 
             //leftHandPosition.x -= handXMovement * leftHandPower * Time.deltaTime;
+            if (playerAudioSource.isPlaying == false)
+            {
+                if (leftHandPower <= 25 && rightHandPower <= 5)
+                {
+                    playerAudioSource.clip = windupAudio;
+                    playerAudioSource.Play();
+                }
+                if (leftHandPower >= 25)
+                {
+                    playerAudioSource.clip = windupChargedAudio;
+                    playerAudioSource.Play();
+                }
+            }
             
+
             leftHandPosition.x = math.remap(0, maximumHandPower, leftHandReturnFloat, maxLeftHandPosition, leftHandPower);
 
 
@@ -197,7 +212,19 @@ public class ArmMovement : MonoBehaviour
             rightHandPower += powerIncrease * Time.deltaTime;
 
             //rightHandPosition.x += handXMovement * rightHandPower * Time.deltaTime;
-
+            if (playerAudioSource.isPlaying == false)
+            {
+                if (rightHandPower <= 25 && leftHandPower <= 5)
+                {
+                    playerAudioSource.clip = windupAudio;
+                    playerAudioSource.Play();
+                }
+                if (rightHandPower >= 25)
+                {
+                    playerAudioSource.clip = windupChargedAudio;
+                    playerAudioSource.Play();
+                }
+            }
 
             rightHandPosition.x = math.remap(0, maximumHandPower, rightHandReturnFloat, maxRightHandPosition, rightHandPower);
 
@@ -275,15 +302,13 @@ public class ArmMovement : MonoBehaviour
         //Once both hands are in the center of the screen, check if a clap was done
         if (math.abs(rightHandPosition.x - leftHandPosition.x) < 0.08f && !clapCheck)
         {
-            Debug.Log("CLAP!!!");
+            //Debug.Log("CLAP!!!");
             clapCheck = true;
-
         }
 
 
         if (math.abs(rightHandPosition.x - leftHandPosition.x) > 0.4f)
         {
-
             clapCheck = false;
         }
 
@@ -295,8 +320,6 @@ public class ArmMovement : MonoBehaviour
         if (clapCheck && firstClap)
         {
             handDistance = Vector3.Distance(rightHandPosition, leftHandPosition);
-
-            print("SUP");
 
             //float remapHandDistance = math.remap(0, 1, 50, 0, handDistance);
 
