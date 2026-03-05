@@ -12,6 +12,7 @@ public class CatchingMinigame : MonoBehaviour
 
     Rigidbody playerBody;
 
+
     public GameObject spawningPositionObject;
 
     public HandCollision leftHandCollidedScr;
