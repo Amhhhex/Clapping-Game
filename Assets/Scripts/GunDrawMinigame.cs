@@ -6,7 +6,7 @@ public class GunDrawMinigame : MonoBehaviour
     public HandCollision leftHandCollidedScr;
     public HandCollision rightHandCollidedScr;
     public GameObject playerObj;
-    public GameObject gunObj;
+    public GameObject bananaObj;
     public GameObject duelPlayerSpawn;
     public TextMeshProUGUI drawAnnounceText;
     public Sprite bananaShotSpr;
@@ -22,9 +22,11 @@ public class GunDrawMinigame : MonoBehaviour
     CharacterMovement characterMovementScr;
     float currentTimeInDraw;
     float currentTimeInShowdown;
+    float currentResultsTime;
     float totalDrawTime;
     float totalShowdownTime = 2f;
     bool showdownStarted;
+    bool showdownWon;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -55,19 +57,25 @@ public class GunDrawMinigame : MonoBehaviour
                 gunmanSprRndr.sprite = gunmanDrawSpr;
                 currentTimeInShowdown += Time.deltaTime;
 
-                if (leftHandCollidedScr.handCollidedObj == gunObj && rightHandCollidedScr.handCollidedObj == gunObj)
+                if (leftHandCollidedScr.handCollidedObj == bananaObj && rightHandCollidedScr.handCollidedObj == bananaObj || showdownWon)
                 {
                     drawAnnounceText.text = "You win!";
-                    //Play gunshot
-                    //Spin Gunslinger
-                    //Assume new position
+                    showdownWon = true;
+                    currentTimeInShowdown = 0;
+                    currentResultsTime += Time.deltaTime;
                     bananaSprRndr.sprite = bananaShotSpr;
                     gunmanSprRndr.sprite = gunmanDownSpr;
-                    currentTimeInDraw = 0;
-                    currentTimeInShowdown = 0;
-                    showdownStarted = false;
-                    billboardScr.enabled = false;
-                    characterMovementScr.enabled = true;
+                    if (currentResultsTime > 3)
+                    {
+                        currentTimeInDraw = 0;
+                        currentResultsTime = 0;
+                        showdownStarted = false;
+                        gunmanSprRndr.sprite = gunmanNeutralSpr;
+                        billboardScr.enabled = true;
+                        characterMovementScr.enabled = true;
+                        bananaObj.gameObject.SetActive(false);
+                        drawAnnounceText.gameObject.SetActive(false);
+                    }
                 }
 
                 if (currentTimeInShowdown >= totalShowdownTime)
@@ -79,8 +87,10 @@ public class GunDrawMinigame : MonoBehaviour
                         currentTimeInDraw = 0;
                         currentTimeInShowdown = 0;
                         showdownStarted = false;
+                        gunmanSprRndr.sprite = gunmanNeutralSpr;
                         billboardScr.enabled = false;
                         characterMovementScr.enabled = true;
+                        bananaObj.gameObject.SetActive(false);
                         drawAnnounceText.gameObject.SetActive(false);
                     }
                 }
@@ -95,11 +105,12 @@ public class GunDrawMinigame : MonoBehaviour
         transform.eulerAngles = Vector3.zero;
         bananaSprRndr.sprite = bananaLoadedSpr;
         gunmanSprRndr.sprite = gunmanNeutralSpr;
-        playerObj.transform.position = duelPlayerSpawn.transform.localPosition;
-        Camera.main.transform.localRotation = Quaternion.identity;
+        bananaObj.gameObject.SetActive(true);
+        playerObj.transform.position = duelPlayerSpawn.transform.position;
+        Camera.main.transform.eulerAngles = new Vector3(0, 180, 0);
         characterMovementScr.enabled = false;
         //Time draw is random between 5-15 seconds
-        totalDrawTime = Random.Range(5, 15);
+        totalDrawTime = Random.Range(3, 10);
         showdownStarted = true;
     }
 }

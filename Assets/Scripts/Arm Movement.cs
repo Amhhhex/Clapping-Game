@@ -353,7 +353,7 @@ public class ArmMovement : MonoBehaviour
             }
             else if (clapScore >= 10f)
             {
-                print("fail score");
+                Debug.Log("fail score");
             }
 
             firstClap = false;

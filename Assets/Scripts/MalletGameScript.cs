@@ -38,8 +38,6 @@ public class MalletGameScript : MonoBehaviour
     int rotationSpeed = 30;
     Vector2 CameraDirection;
 
-
-    int score;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -146,8 +144,6 @@ public class MalletGameScript : MonoBehaviour
 
 
         playerBody.constraints = RigidbodyConstraints.None;
-
-        score = 0;
 
         highestPosition = 0;
 
