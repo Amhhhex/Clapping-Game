@@ -341,7 +341,7 @@ public class ArmMovement : MonoBehaviour
                     playerAudioSource.clip = megaClapAudio;
                     playerAudioSource.Play();
                 }
-                else if (clapScore >= 75f)
+                else if (clapScore >= 65f)
                 {
                     Debug.Log("Great! score");
                     playerAudioSource.clip = soloClapAudio;

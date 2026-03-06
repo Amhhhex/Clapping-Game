@@ -117,14 +117,14 @@ public class CatchingMinigame : MonoBehaviour
 
                 if(currentObject.name == "Gold Bar(Clone)")
                 {
-                    score += 100;
+                    score += 25;
 
                     scoreText.text = "Score: " + score;
                 }
 
                 if(currentObject.name == "Fly(Clone)")
                 {
-                    score += 1;
+                    score += 5;
 
                     scoreText.text = "Score: " + score;
                 }

@@ -28,7 +28,7 @@ public class CharacterMovement : MonoBehaviour
 
     void PlayerMovement()
     {
-        if (armMovementScr.clapCheck == true && armMovementScr.clapScore > 50f)
+        if (armMovementScr.clapCheck == true && armMovementScr.clapScore > 35f)
         {
             PlayerBody.AddForce(PlayerCamera.transform.forward * armMovementScr.clapScore, ForceMode.Impulse);
         }

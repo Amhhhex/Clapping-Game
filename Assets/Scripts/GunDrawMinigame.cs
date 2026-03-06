@@ -70,6 +70,7 @@ public class GunDrawMinigame : MonoBehaviour
                         currentTimeInDraw = 0;
                         currentResultsTime = 0;
                         showdownStarted = false;
+                        showdownWon = false;
                         gunmanSprRndr.sprite = gunmanNeutralSpr;
                         billboardScr.enabled = true;
                         characterMovementScr.enabled = true;
