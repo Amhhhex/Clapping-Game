@@ -89,7 +89,7 @@ public class MalletGameScript : MonoBehaviour
                 playerObj.transform.position = malletPosition.transform.position;
 
 
-                playerBody.linearDamping = 3f;
+                playerBody.linearDamping = 2f;
 
                 playerBody.constraints = RigidbodyConstraints.FreezePositionY;
                 playerBody.constraints = RigidbodyConstraints.FreezeRotation;

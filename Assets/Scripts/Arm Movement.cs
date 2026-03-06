@@ -65,7 +65,7 @@ public class ArmMovement : MonoBehaviour
     //State change for checking claps
     public bool clapCheck;
 
-    //float handXMovement = 0.9f;
+
 
     float maxRightHandPosition = -0.5f;
     float maxLeftHandPosition = -1.9f;
@@ -168,7 +168,7 @@ public class ArmMovement : MonoBehaviour
         //Interprolating the movement of the left hand towards the center of the screen
         if (moveLeftHand)
         {
-            leftHandMoveTimer += leftHandPower/5 * Time.deltaTime;
+            leftHandMoveTimer += leftHandPower / 3 * Time.deltaTime;
 
             float aniCurveTimer = aniCurveMove.Evaluate(leftHandMoveTimer);
 
@@ -251,7 +251,7 @@ public class ArmMovement : MonoBehaviour
 
         if (moveRightHand)
         {
-            rightHandMoveTimer += rightHandPower/5 * Time.deltaTime;
+            rightHandMoveTimer += rightHandPower / 3 * Time.deltaTime;
 
             //rightHandMoveTimer += Time.deltaTime;
 
