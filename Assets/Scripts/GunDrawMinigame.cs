@@ -49,7 +49,10 @@ public class GunDrawMinigame : MonoBehaviour
         if (showdownStarted)
         {
             currentTimeInDraw += Time.deltaTime;
-            drawAnnounceText.text = "Ready your arms..!";
+            if (!showdownWon || currentTimeInShowdown >= totalShowdownTime + 2)
+            {
+                drawAnnounceText.text = "Ready your arms..!";
+            }
             if (currentTimeInDraw >= totalDrawTime)
             {
                 drawAnnounceText.text = "DRAW!";
@@ -61,6 +64,7 @@ public class GunDrawMinigame : MonoBehaviour
                 {
                     drawAnnounceText.text = "You win!";
                     showdownWon = true;
+                    currentTimeInDraw = 0;
                     currentTimeInShowdown = 0;
                     currentResultsTime += Time.deltaTime;
                     bananaSprRndr.sprite = bananaShotSpr;

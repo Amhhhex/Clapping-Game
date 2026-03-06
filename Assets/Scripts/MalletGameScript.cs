@@ -88,7 +88,7 @@ public class MalletGameScript : MonoBehaviour
                 playerObj.transform.position = malletPosition.transform.position;
 
 
-                playerBody.linearDamping = 2f;
+                playerBody.linearDamping = 1f;
 
                 playerBody.constraints = RigidbodyConstraints.FreezePositionY;
                 playerBody.constraints = RigidbodyConstraints.FreezeRotation;
@@ -109,9 +109,9 @@ public class MalletGameScript : MonoBehaviour
 
     void PlayerMovement()
     {
-        if (armMovementScr.clapCheck == true && armMovementScr.clapScore > 50f)
+        if (armMovementScr.clapCheck == true && armMovementScr.clapScore > 35f)
         {
-            playerBody.AddForce(PlayerCamera.transform.up * armMovementScr.clapScore, ForceMode.Impulse);
+            playerBody.AddForce((PlayerCamera.transform.up * armMovementScr.clapScore) * 3, ForceMode.Impulse);
         }
     }
 
@@ -131,7 +131,7 @@ public class MalletGameScript : MonoBehaviour
 
         playerBody.rotation = Quaternion.identity;
 
-        playerBody.linearDamping = 6f;
+        playerBody.linearDamping = 8f;
         BillboardScr.enabled = false;
         playerObj.transform.localPosition = malletPosition.transform.position;
         Camera.main.transform.localRotation = Quaternion.identity;
