@@ -18,6 +18,7 @@ public class MalletGameScript : MonoBehaviour
 
 
     ArmMovement armMovementScr;
+    BillboardSprite BillboardScr;
     CharacterMovement characterMovementScript;
 
     bool malletStarted;
@@ -44,7 +45,7 @@ public class MalletGameScript : MonoBehaviour
 
         armMovementScr = playerObj.GetComponentInChildren<ArmMovement>();
         characterMovementScript = playerObj.GetComponent<CharacterMovement>();
-
+        BillboardScr = GetComponent<BillboardSprite>();
         playerBody = playerObj.GetComponent<Rigidbody>();
 
         
@@ -94,7 +95,7 @@ public class MalletGameScript : MonoBehaviour
                 characterMovementScript.enabled = true;
 
                 malletStarted = false;
-                
+                BillboardScr.enabled = true;
 
 
             }
@@ -131,8 +132,8 @@ public class MalletGameScript : MonoBehaviour
         playerBody.rotation = Quaternion.identity;
 
         playerBody.linearDamping = 6f;
-
-        playerObj.transform.localPosition = new Vector3(malletPosition.transform.position.x, malletPosition.transform.position.y, malletPosition.transform.position.z);
+        BillboardScr.enabled = false;
+        playerObj.transform.localPosition = malletPosition.transform.position;
         Camera.main.transform.localRotation = Quaternion.identity;
         characterMovementScript.enabled = false;
         //Time draw is random between 5-15 seconds

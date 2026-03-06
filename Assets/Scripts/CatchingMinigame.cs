@@ -133,8 +133,8 @@ public class CatchingMinigame : MonoBehaviour
 
             }
 
-
-            if(objectsBody.position.y < 0.2f)
+            //Potentially stop when velocity on object is not increasing/zero
+            if(objectsBody.position.y < 0.22f)
             {
                 Destroy(currentObject);
             }
@@ -143,20 +143,11 @@ public class CatchingMinigame : MonoBehaviour
             {
                 catchingStarted = false;
                 characterMovementScript.enabled = true;
-                timerText.text = "Done!";
+                timerText.enabled = false;
+                scoreText.enabled = false;
             }
 
-
-            
-
         }
-
-
-
-
-
-
-        
     }
 
     private void OnCollisionEnter(Collision playerCollider)

@@ -105,10 +105,11 @@ public class GunDrawMinigame : MonoBehaviour
         transform.eulerAngles = Vector3.zero;
         bananaSprRndr.sprite = bananaLoadedSpr;
         gunmanSprRndr.sprite = gunmanNeutralSpr;
-        bananaObj.gameObject.SetActive(true);
         playerObj.transform.position = duelPlayerSpawn.transform.position;
         Camera.main.transform.eulerAngles = new Vector3(0, 180, 0);
         characterMovementScr.enabled = false;
+        bananaObj.gameObject.SetActive(true);
+        drawAnnounceText.enabled = true;
         //Time draw is random between 5-15 seconds
         totalDrawTime = Random.Range(3, 10);
         showdownStarted = true;
