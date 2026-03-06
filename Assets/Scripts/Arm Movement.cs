@@ -101,9 +101,7 @@ public class ArmMovement : MonoBehaviour
 
         Vector3 rightHandPosition = rightHand.transform.localPosition;
 
-        //print("Screen Width / 2: " + Screen.width / 20);
-
-        //Vector3 middleScreen = Camera.main.ScreenToViewportPoint(new Vector3(Screen.width / 1000, 0, 0));
+        
         
 
         //Move the left and right hand's up or down based on which keys are held
